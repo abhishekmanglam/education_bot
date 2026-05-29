@@ -1,0 +1,22 @@
+
+Photosynthesis is the process by which plants convert sunlight into food.
+Plants use chlorophyll to absorb light energy from the sun.
+The light energy splits water molecules into hydrogen and oxygen.
+Oxygen is released as a byproduct — this is the oxygen we breathe.
+Carbon dioxide from the air combines with hydrogen to form glucose.
+Glucose is the sugar that gives the plant energy to grow.
+
+The equation for photosynthesis is:
+6CO2 + 6H2O + light energy → C6H12O6 + 6O2
+
+Photosynthesis happens in two stages: light-dependent reactions and
+the Calvin cycle. Light-dependent reactions occur in the thylakoid
+membranes. The Calvin cycle occurs in the stroma of the chloroplast.
+
+Cell division is the process by which cells reproduce.
+Mitosis produces two identical daughter cells from one parent cell.
+Mitosis has four phases: prophase, metaphase, anaphase, and telophase.
+During prophase, chromosomes condense and become visible.
+During metaphase, chromosomes line up along the cell equator.
+During anaphase, chromosomes are pulled to opposite poles.
+During telophase, two new nuclei form and the cell divides.
