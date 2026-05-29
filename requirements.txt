@@ -5,3 +5,4 @@ langchain-ollama
 pypdf
 faiss-cpu
 pymupdf
+chromadb
