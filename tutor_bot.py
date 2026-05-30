@@ -6,9 +6,11 @@ warnings.filterwarnings("ignore")
 
 import os
 import streamlit as st
+
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
-from langchain_community.vectorstores import Chroma
+#from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -28,7 +30,8 @@ st.caption("Powered by Llama 3 + RAG — answers only from your curriculum")
 # Dynamic paths — work on both your laptop AND Streamlit Cloud
 BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
 PDF_FOLDER = os.path.join(BASE_DIR, "pdfs")
-CHROMA_DIR = os.path.join(BASE_DIR, "chroma_db")
+#CHROMA_DIR = os.path.join(BASE_DIR, "chroma_db")
+FAISS_DIR = os.path.join(BASE_DIR, "FAISS_db")
 
 # ── LOAD EMBEDDINGS ────────────────────────────────────────────────────────
 @st.cache_resource
@@ -62,7 +65,8 @@ def load_vectorstore():
     Loads PDFs → chunks → embeds → stores in Chroma.
     Runs only once per session due to @st.cache_resource.
     """
-    embeddings = load_embeddings()
+    #embeddings = load_embeddings()
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
     # ── DEBUG: show what Streamlit Cloud can see ───────────────────────
     st.sidebar.markdown("### 📁 File Check")
@@ -118,11 +122,12 @@ def load_vectorstore():
     st.sidebar.success(f"✓ {len(chunks)} chunks ready")
 
     # Embed and store
-    vectorstore = Chroma.from_documents(
-        documents=chunks,
-        embedding=embeddings,
-        persist_directory=CHROMA_DIR
-    )
+    # vectorstore = Chroma.from_documents(
+    #     documents=chunks,
+    #     embedding=embeddings,
+    #     persist_directory=CHROMA_DIR
+    # )
+    vectorstore = FAISS.from_documents(chunks, embeddings)
 
     return vectorstore
 
