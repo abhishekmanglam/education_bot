@@ -40,8 +40,8 @@ def load_vectorstore():
     Runs only once per session due to @st.cache_resource.
     """
 
-    PDF_FOLDER = r"C:\Books\Class IX\Science" 
-    CHROMA_DIR = r"C:\EducationBot\app_chroma_db"
+    PDF_FOLDER = r"C:\Users\abhis\OneDrive\Documents\GitHub\education_bot\pdfs" 
+    CHROMA_DIR = r"C:\Users\abhis\OneDrive\Documents\GitHub\education_bot\app_chroma_db"
 
     # If vectorstore already exists on disk — load it directly
     # No need to re-embed every time you restart the app
@@ -112,7 +112,7 @@ with st.sidebar:
     st.header("📁 Settings")
 
     # Show which PDFs are loaded
-    PDF_FOLDER = r"C:\Books\Class IX\Science"
+    PDF_FOLDER = r"C:\Users\abhis\OneDrive\Documents\GitHub\education_bot\pdfs"
     if os.path.exists(PDF_FOLDER):
         pdf_files = [f for f in os.listdir(PDF_FOLDER)
                      if f.endswith(".pdf")]
