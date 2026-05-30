@@ -1,0 +1,8 @@
+education_bot_venv/
+__pycache__/
+*.pyc
+
+chroma_db/
+app_chroma_db/
+
+.env
