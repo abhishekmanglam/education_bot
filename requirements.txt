@@ -6,10 +6,6 @@ langchain-text-splitters
 langchain-huggingface
 langchain-groq
 sentence-transformers
-faiss-cpu
-#chromadb
+Faiss-CPU
 pypdf
 pdfplumber
-#protobuf
-#transformers
-#torch
