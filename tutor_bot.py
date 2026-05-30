@@ -4,6 +4,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import os
+import json
 import streamlit as st
 # st is the Streamlit object — everything UI-related goes through it
 # st.title(), st.chat_message(), st.chat_input() etc.
@@ -15,6 +16,9 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage
 
+BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
+PDF_FOLDER = os.path.join(BASE_DIR, "pdfs")
+CHROMA_DIR = os.path.join(BASE_DIR, "chroma_db")
 
 # ── PAGE CONFIG ───────────────────────────────────────────────────────────
 st.set_page_config(
@@ -40,8 +44,10 @@ def load_vectorstore():
     Runs only once per session due to @st.cache_resource.
     """
 
-    PDF_FOLDER = r"C:\Users\abhis\OneDrive\Documents\GitHub\education_bot\pdfs" 
-    CHROMA_DIR = r"C:\Users\abhis\OneDrive\Documents\GitHub\education_bot\app_chroma_db"
+    # PDF_FOLDER = r"C:\Users\abhis\OneDrive\Documents\GitHub\education_bot\pdfs" 
+    # CHROMA_DIR = r"C:\Users\abhis\OneDrive\Documents\GitHub\education_bot\app_chroma_db"
+    PDF_FOLDER = os.path.join(BASE_DIR, "pdfs")
+    CHROMA_DIR = os.path.join(BASE_DIR, "chroma_db")
 
     # If vectorstore already exists on disk — load it directly
     # No need to re-embed every time you restart the app
@@ -112,7 +118,8 @@ with st.sidebar:
     st.header("📁 Settings")
 
     # Show which PDFs are loaded
-    PDF_FOLDER = r"C:\Users\abhis\OneDrive\Documents\GitHub\education_bot\pdfs"
+    #PDF_FOLDER = r"C:\Users\abhis\OneDrive\Documents\GitHub\education_bot\pdfs"
+    PDF_FOLDER = os.path.join(BASE_DIR, "pdfs")
     if os.path.exists(PDF_FOLDER):
         pdf_files = [f for f in os.listdir(PDF_FOLDER)
                      if f.endswith(".pdf")]
