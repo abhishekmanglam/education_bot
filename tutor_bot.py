@@ -5,6 +5,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 import streamlit as st
 
 from langchain_huggingface import HuggingFaceEmbeddings

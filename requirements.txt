@@ -6,6 +6,8 @@ langchain-text-splitters
 langchain-huggingface
 langchain-groq
 sentence-transformers
+transformers
+tokenizers
 Faiss-CPU
 pypdf
 pdfplumber
