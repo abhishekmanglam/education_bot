@@ -54,7 +54,7 @@ def load_llm():
     Reads API key from Streamlit Secrets.
     """
     return ChatGroq(
-        model="llama3-8b-8192",
+        model="llama-3.1-8b-instant",
         temperature=0.3,
         api_key=st.secrets["GROQ_API_KEY"]
     )
