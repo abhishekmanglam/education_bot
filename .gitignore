@@ -6,3 +6,7 @@ chroma_db/
 app_chroma_db/
 .streamlit
 .env
+model_cache/
+faiss_db/
+student_db/
+secrets
