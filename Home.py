@@ -41,7 +41,7 @@ if st.session_state.student_id is None:
         name   = st.text_input("Your Name", placeholder="e.g. Arjun Sharma")
         class_ = st.selectbox(
             "Your Class",
-            ["Class 7","Class 8", "Class 9", "Class 10"]
+            ["Class 7", "Class 8", "Class 9", "Class 10"]
         )
         submit = st.form_submit_button("Start Learning 🚀")
 
@@ -73,13 +73,13 @@ else:
         st.markdown("### 📖 Tutor Bot")
         st.markdown("Ask questions about your curriculum. "
                     "Get explanations with source references.")
-        st.page_link("Pages/1_Tutor_Bot.py", label="Open Tutor Bot →")
+        st.page_link("Pages/1_tutor_Bot.py", label="Open Tutor Bot →")
 
     with col2:
         st.markdown("### 📝 Assessment Bot")
         st.markdown("Test your knowledge. "
                     "Adaptive questions based on your weak areas.")
-        st.page_link("Pages/2_Assessment_Bot.py",
+        st.page_link("Pages/2_Assessment_bot.py",
                      label="Open Assessment Bot →")
 
     with col3:
