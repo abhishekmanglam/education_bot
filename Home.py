@@ -73,7 +73,7 @@ else:
         st.markdown("### 📖 Tutor Bot")
         st.markdown("Ask questions about your curriculum. "
                     "Get explanations with source references.")
-        st.page_link("Pages/1_tutor_Bot.py", label="Open Tutor Bot →")
+        st.page_link("Pages/1_tutor_bot.py", label="Open Tutor Bot →")
 
     with col2:
         st.markdown("### 📝 Assessment Bot")
