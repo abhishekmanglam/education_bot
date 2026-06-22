@@ -74,7 +74,7 @@ else:
         st.markdown("Ask questions about your curriculum. "
                     "Get explanations with source references.")
         if st.button("Open Tutor Bot →"):
-            st.switch_page("Pages/1_tutor_bot.py")
+            st.switch_page("pages/1_tutor_bot.py")
         #st.page_link("Pages/1_tutor_bot.py", label="Open Tutor Bot →")
 
     with col2:
@@ -82,7 +82,7 @@ else:
         st.markdown("Test your knowledge. "
                     "Adaptive questions based on your weak areas.")
         if st.button("Open Assessment Bot →"):
-            st.switch_page("Pages/2_assessment_bot.py")
+            st.switch_page("pages/2_assessment_bot.py")
         # st.page_link("Pages/2_Assessment_bot.py",
         #              label="Open Assessment Bot →")
 
@@ -91,7 +91,7 @@ else:
         st.markdown("Structured lessons delivered "
                     "topic by topic from your syllabus.")
         if st.button("Open Content Delievery →"):
-            st.switch_page("Pages/2_Content_Delievery.py")
+            st.switch_page("pages/2_Content_Delievery.py")
        
 
     st.divider()
