@@ -10,8 +10,11 @@ from langchain_core.messages import HumanMessage, AIMessage
 
 from utils.vectorstore import load_vectorstore
 from utils.llm import load_llm
-from utils.student_profile import get_weak_topics, init_db
+# from utils.student_profile import get_weak_topics, init_db
 from utils.diagram_renderer import render_response_with_diagrams
+
+from utils.student_profile import (init_db, get_weak_topics,
+    get_or_create_student, get_student_class, get_topics_for_class_subject)
 
 # ── PAGE CONFIG ────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -55,26 +58,29 @@ if weak_topics:
 # ── RAG ANSWER FUNCTION ────────────────────────────────────────────────────
 def get_answer(user_input, chat_history, retriever):
 
-    retrieved_docs = retriever.invoke(user_input)
-    # retrieved_docs = vectorstore.similarity_search(
-    #     user_input,
-    #     k=5,
-    #     filter={
-    #     "class": student_class,
-    #     "subject": selected_subject
-    #     }
-    # )
+    # retrieved_docs = retriever.invoke(user_input)
+    student_class = get_student_class(student_id)
+
+    selected_subject = get_topics_for_class_subject(vectorstore,student_class,subject)
+    retrieved_docs = vectorstore.similarity_search(
+        user_input,
+        k=5,
+        filter={
+        "class": student_class,
+        "subject": selected_subject
+        }
+    )
 
     # Debug
     st.sidebar.write("Retrieved docs:", len(retrieved_docs))
     st.sidebar.write("Question:", user_input)
 
     for doc in retrieved_docs[:5]:
-        st.sidebar.write(doc.metadata)
+        st.sidebar.write(
             # f"{doc.metadata.get('filename')} | Page {doc.metadata.get('page')}"
             # )
-            # f"{doc.metadata.get('filename')} | "f"Class={doc.metadata.get('class')} | " f"Subject={doc.metadata.get('subject')}"
-            # )
+            f"{doc.metadata.get('filename')} | "f"Class={doc.metadata.get('class')} | " f"Subject={doc.metadata.get('subject')}"
+            )
         
 
     if not retrieved_docs or all(
