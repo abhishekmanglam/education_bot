@@ -56,12 +56,13 @@ if weak_topics:
                          for t in weak_topics)
 
 # ── RAG ANSWER FUNCTION ────────────────────────────────────────────────────
+student_class = get_student_class(student_id)
+
+selected_subject = get_topics_for_class_subject(vectorstore,student_class,subject)
 def get_answer(user_input, chat_history, retriever):
 
     # retrieved_docs = retriever.invoke(user_input)
-    student_class = get_student_class(student_id)
-
-    selected_subject = get_topics_for_class_subject(vectorstore,student_class,subject)
+    
     retrieved_docs = vectorstore.similarity_search(
         user_input,
         k=5,
