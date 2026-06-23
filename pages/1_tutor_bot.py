@@ -55,26 +55,26 @@ if weak_topics:
 # ── RAG ANSWER FUNCTION ────────────────────────────────────────────────────
 def get_answer(user_input, chat_history, retriever):
 
-    #retrieved_docs = retriever.invoke(user_input)
-    retrieved_docs = vectorstore.similarity_search(
-        user_input,
-        k=5,
-        filter={
-        "class": student_class,
-        "subject": selected_subject
-        }
-    )
+    retrieved_docs = retriever.invoke(user_input)
+    # retrieved_docs = vectorstore.similarity_search(
+    #     user_input,
+    #     k=5,
+    #     filter={
+    #     "class": student_class,
+    #     "subject": selected_subject
+    #     }
+    # )
 
     # Debug
     st.sidebar.write("Retrieved docs:", len(retrieved_docs))
     st.sidebar.write("Question:", user_input)
 
     for doc in retrieved_docs[:5]:
-        st.sidebar.write(
+        st.sidebar.write(doc.metadata)
             # f"{doc.metadata.get('filename')} | Page {doc.metadata.get('page')}"
             # )
-            f"{doc.metadata.get('filename')} | "f"Class={doc.metadata.get('class')} | " f"Subject={doc.metadata.get('subject')}"
-            )
+            # f"{doc.metadata.get('filename')} | "f"Class={doc.metadata.get('class')} | " f"Subject={doc.metadata.get('subject')}"
+            # )
         
 
     if not retrieved_docs or all(
