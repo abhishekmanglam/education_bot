@@ -58,7 +58,7 @@ if weak_topics:
 # ── RAG ANSWER FUNCTION ────────────────────────────────────────────────────
 student_class = get_student_class(student_id)
 
-selected_subject = get_topics_for_class_subject(vectorstore,student_class,subject)
+# selected_subject = get_topics_for_class_subject(vectorstore,student_class,subject)
 def get_answer(user_input, chat_history, retriever):
 
     # retrieved_docs = retriever.invoke(user_input)
@@ -67,8 +67,8 @@ def get_answer(user_input, chat_history, retriever):
         user_input,
         k=5,
         filter={
-        "class": student_class,
-        "subject": selected_subject
+        "class": student_class
+        # "subject": selected_subject
         }
     )
 
