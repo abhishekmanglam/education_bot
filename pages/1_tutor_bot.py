@@ -71,8 +71,8 @@ def get_answer(user_input, chat_history, retriever):
 
         for msg in reversed(chat_history):
             if isinstance(msg, HumanMessage):
-            previous_question = msg.content
-            break
+                previous_question = msg.content
+                break
 
         search_query = (previous_question +"\nFollow-up: " +user_input)
 
