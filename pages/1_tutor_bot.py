@@ -61,19 +61,9 @@ student_class = get_student_class(student_id)
 # selected_subject = get_topics_for_class_subject(vectorstore,student_class,subject)
 def get_answer(user_input, chat_history, retriever):
 
-    followup_phrases = [
-    "yes",
-    "no",
-    "explain",
-    "tell me more",
-    "why",
-    "how",
-    "what do you mean",
-    "please explain"]
+    followup_phrases = ["yes","no","explain","tell me more","why","how","what do you mean","please explain"]
 
-    is_followup = (
-        len(user_input.split()) <= 5
-        or user_input.lower() in followup_phrases)
+    is_followup = (len(user_input.split()) <= 5 or user_input.lower() in followup_phrases)
 
     if is_followup:
 
@@ -84,23 +74,13 @@ def get_answer(user_input, chat_history, retriever):
             previous_question = msg.content
             break
 
-        search_query = (
-            previous_question +
-            "\nFollow-up: " +
-            user_input
-            )
+        search_query = (previous_question +"\nFollow-up: " +user_input)
 
     else:
         search_query = user_input
 
 
-    retrieved_docs = vectorstore.similarity_search(
-        search_query,
-        k=5,
-        filter={
-        "class": student_class
-        }
-    )
+    retrieved_docs = vectorstore.similarity_search(search_query,k=5,filter={"class": student_class})
     # Debug
     st.sidebar.write("Retrieved docs:", len(retrieved_docs))
     st.sidebar.write("Question:", user_input)
