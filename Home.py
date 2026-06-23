@@ -91,7 +91,7 @@ else:
         st.markdown("Structured lessons delivered "
                     "topic by topic from your syllabus.")
         if st.button("Open Content Delievery →"):
-            st.switch_page("pages/3_Content_Delievery.py")
+            st.switch_page("pages/3_Content_Delivery.py")
        
 
     st.divider()
