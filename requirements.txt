@@ -11,3 +11,7 @@ tokenizers
 Faiss-CPU
 pypdf
 pdfplumber
+torch
+torchvision
+peft
+
