@@ -82,7 +82,7 @@ else:
         st.markdown("Test your knowledge. "
                     "Adaptive questions based on your weak areas.")
         if st.button("Open Assessment Bot →"):
-            st.switch_page("pages/2_assessment_bot.py")
+            st.switch_page("pages/2_Assessment_bot.py")
         # st.page_link("Pages/2_Assessment_bot.py",
         #              label="Open Assessment Bot →")
 
