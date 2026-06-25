@@ -152,7 +152,7 @@ if not st.session_state.assessment_started:
     mode = st.radio(
         "Choose Assessment Mode",
         [
-            "Pick a topic",
+            "Curriculum Topic", "Custom Topic",
             "Surprise me (weak topic)"
         ]
     )
@@ -167,7 +167,7 @@ if not st.session_state.assessment_started:
         ]
     )
 
-    if mode == "Pick a topic":
+    if mode == "Curriculum Topic":
 
         # topic = st.text_input(
         #     "Topic",
@@ -179,6 +179,9 @@ if not st.session_state.assessment_started:
         topics = get_topics_for_class_subject(vectorstore,student_class,subject)
 
         topic = st.selectbox("Topic",topics)
+        
+    else if mode == "custom_topic:
+        custom_topic = st.text_input("Enter topic",placeholder="Fractions")
 
     else:
 
@@ -252,6 +255,10 @@ if not st.session_state.assessment_started:
 def generate_question(subject, topic, difficulty):
 
     question_types = [
+    "Mixed",
+    "MCQ",
+    "True/False",
+    "Fill in the Blanks",
     "Short Answer",
     "Numerical",
     "Application",
@@ -356,7 +363,8 @@ Context:
 {context}
                                               
 Question Type:
-{question_type}
+{question_type} questions
+from the retrieved context.
 
 Rules:
 1. Generate ONE new question.
@@ -369,6 +377,18 @@ Rules:
 7. Output ONLY the question.
 8. Avoid starting the question with the same words
    as any previous question.
+9. Generate:
+
+- Use only the context.
+- For MCQ provide 4 options.
+- For True/False provide statement only.
+- For Fill in the Blanks provide blanks.
+- For Short Answer ask conceptual questions.
+
+40% MCQ
+20% True/False
+20% Fill in the Blanks
+20% Subjective.
 """)
 
     response = llm.invoke(
