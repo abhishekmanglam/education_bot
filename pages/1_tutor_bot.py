@@ -102,9 +102,7 @@ def get_answer(user_input, chat_history, retriever):
     # retrieved_docs = vectorstore.similarity_search(search_query,k=k_value,filter={"class": student_class})
 
     # st.session_state["last_retrieved_docs"] = retrieved_docs
-    # Debug
-    st.sidebar.write("Retrieved docs:", len(retrieved_docs))
-    st.sidebar.write("Question:", user_input)
+    
 
     verification_phrases = [
     "is that all",
@@ -130,6 +128,10 @@ def get_answer(user_input, chat_history, retriever):
         filter={"class": student_class})
 
         st.session_state["last_retrieved_docs"] = retrieved_docs
+
+    # Debug
+    st.sidebar.write("Retrieved docs:", len(retrieved_docs))
+    st.sidebar.write("Question:", user_input)
 
     for doc in retrieved_docs[:5]:
         st.sidebar.write(
