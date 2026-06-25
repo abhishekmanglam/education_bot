@@ -100,9 +100,36 @@ def get_answer(user_input, chat_history, retriever):
     k_value = 10 if is_extraction else 5
 
     retrieved_docs = vectorstore.similarity_search(search_query,k=k_value,filter={"class": student_class})
+
+    st.session_state["last_retrieved_docs"] = retrieved_docs
     # Debug
     st.sidebar.write("Retrieved docs:", len(retrieved_docs))
     st.sidebar.write("Question:", user_input)
+
+    verification_phrases = [
+    "is that all",
+    "anything else",
+    "anything left",
+    "did you miss anything",
+    "is there more"
+    ]
+
+    is_verification = (
+    user_input.lower().strip() in verification_phrases
+    )
+
+    if is_verification and "last_retrieved_docs" in st.session_state:
+
+        retrieved_docs = st.session_state["last_retrieved_docs"]
+
+    else:
+
+        retrieved_docs = vectorstore.similarity_search(
+        search_query,
+        k=5,
+        filter={"class": student_class})
+
+        st.session_state["last_retrieved_docs"] = retrieved_docs
 
     for doc in retrieved_docs[:5]:
         st.sidebar.write(
