@@ -239,6 +239,15 @@ def get_answer(user_input, chat_history, retriever):
 
     llm = load_llm()
 
+    if is_verification:
+        user_input = """
+    Review the retrieved context carefully.
+    Have any events, characters, or important details been missed
+    from your previous answer?
+    If yes, list them.
+    If no, say 'No additional events were found in the retrieved sections.'
+    """
+
     formatted = prompt.format_messages(
         context=context,
         chat_history=chat_history,
