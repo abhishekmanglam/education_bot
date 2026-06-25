@@ -8,3 +8,5 @@ def load_llm():
         temperature=0.5,
         api_key=st.secrets["GROQ_API_KEY"]
     )
+st.write("API key exists:", bool(api_key))
+st.write("Model:", model_name)
