@@ -1,8 +1,15 @@
-import warnings
+from utils.auth import login
+
+if not login():
+    st.stop()
+    
+    import warnings
 warnings.filterwarnings("ignore")
 
 import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+
 
 import streamlit as st
 from utils.student_profile import init_db, get_or_create_student, \
