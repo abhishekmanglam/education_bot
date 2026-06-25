@@ -1,9 +1,4 @@
-from utils.auth import login
-
-if not login():
-    st.stop()
-    
-    import warnings
+import warnings
 warnings.filterwarnings("ignore")
 
 import os
@@ -12,6 +7,12 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 
 import streamlit as st
+
+from utils.auth import login
+
+if not login():
+    st.stop()
+    
 from utils.student_profile import init_db, get_or_create_student, \
     get_all_scores, get_weak_topics
 
