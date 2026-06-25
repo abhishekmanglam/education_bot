@@ -99,9 +99,9 @@ def get_answer(user_input, chat_history, retriever):
 
     k_value = 10 if is_extraction else 5
 
-    retrieved_docs = vectorstore.similarity_search(search_query,k=k_value,filter={"class": student_class})
+    # retrieved_docs = vectorstore.similarity_search(search_query,k=k_value,filter={"class": student_class})
 
-    st.session_state["last_retrieved_docs"] = retrieved_docs
+    # st.session_state["last_retrieved_docs"] = retrieved_docs
     # Debug
     st.sidebar.write("Retrieved docs:", len(retrieved_docs))
     st.sidebar.write("Question:", user_input)
