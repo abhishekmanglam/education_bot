@@ -178,10 +178,10 @@ if not st.session_state.assessment_started:
 
         topics = get_topics_for_class_subject(vectorstore,student_class,subject)
 
-        topic = st.selectbox("Topic",topics)
+        topic = st.selectbox("Topic", topics)
         
     elif mode == "custom_topic":
-        custom_topic = st.text_input("Enter topic",placeholder="Fractions")
+        topic = st.text_input("Enter topic",placeholder= "Number System, Decimals, Rational Numbers, Sound")
 
     else:
 
