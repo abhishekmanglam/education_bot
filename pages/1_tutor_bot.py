@@ -79,6 +79,22 @@ def get_answer(user_input, chat_history, retriever):
     else:
         search_query = user_input
 
+    question_lower = user_input.lower()
+
+    extraction_keywords = [
+        "list",
+        "all events",
+        "events in the story",
+        "all characters",
+        "characters in the story",
+        "timeline",
+        "sequence of events",
+        "name all",
+        "summary",
+        "give all"]
+
+    is_extraction = any(keyword in question_lower for keyword in extraction_keywords)
+
 
     k_value = 10 if is_extraction else 5
 
@@ -120,21 +136,7 @@ def get_answer(user_input, chat_history, retriever):
         for doc in retrieved_docs[:3]
     ]
 
-    question_lower = user_input.lower()
-
-    extraction_keywords = [
-        "list",
-        "all events",
-        "events in the story",
-        "all characters",
-        "characters in the story",
-        "timeline",
-        "sequence of events",
-        "name all",
-        "summary",
-        "give all"]
-
-    is_extraction = any(keyword in question_lower for keyword in extraction_keywords)
+    
 
     if is_extraction:
 
