@@ -61,9 +61,10 @@ student_class = get_student_class(student_id)
 # selected_subject = get_topics_for_class_subject(vectorstore,student_class,subject)
 def get_answer(user_input, chat_history, retriever):
 
-    followup_phrases = ["yes","no","explain","tell me more","why","how","what do you mean","please explain"]
+    followup_phrases = ["yes","no","explain","tell me more","why","how","what do you mean","please explain", "is that all", "anything else", "anything left",
+                       "did you miss anything", "is there more"]
 
-    is_followup = (len(user_input.split()) <= 5 or user_input.lower() in followup_phrases)
+    is_followup = user_input.lower().strip() in followup_phrases
 
     if is_followup:
 
@@ -74,7 +75,7 @@ def get_answer(user_input, chat_history, retriever):
                 previous_question = msg.content
                 break
 
-        search_query = (previous_question +"\nFollow-up: " +user_input)
+        search_query = previous_question
 
     else:
         search_query = user_input
