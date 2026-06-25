@@ -180,7 +180,7 @@ if not st.session_state.assessment_started:
 
         topic = st.selectbox("Topic",topics)
         
-    elif mode == "custom_topic:
+    elif mode == "custom_topic":
         custom_topic = st.text_input("Enter topic",placeholder="Fractions")
 
     else:
