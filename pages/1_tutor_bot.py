@@ -42,7 +42,7 @@ vectorstore = load_vectorstore()
 retriever   = vectorstore.as_retriever(
     search_type="mmr",
     search_kwargs={
-        "k": 5,
+        "k": 8,
         "fetch_k": 15
     }
 )
@@ -80,7 +80,9 @@ def get_answer(user_input, chat_history, retriever):
         search_query = user_input
 
 
-    retrieved_docs = vectorstore.similarity_search(search_query,k=5,filter={"class": student_class})
+    k_value = 10 if is_extraction else 5
+
+    retrieved_docs = vectorstore.similarity_search(search_query,k=k_value,filter={"class": student_class})
     # Debug
     st.sidebar.write("Retrieved docs:", len(retrieved_docs))
     st.sidebar.write("Question:", user_input)
@@ -118,46 +120,90 @@ def get_answer(user_input, chat_history, retriever):
         for doc in retrieved_docs[:3]
     ]
 
+    question_lower = user_input.lower()
+
+    extraction_keywords = [
+        "list",
+        "all events",
+        "events in the story",
+        "all characters",
+        "characters in the story",
+        "timeline",
+        "sequence of events",
+        "name all",
+        "summary",
+        "give all"]
+
+    is_extraction = any(keyword in question_lower for keyword in extraction_keywords)
+
+    if is_extraction:
+
+        system_prompt = f"""
+    You are a curriculum tutor for {student_name}.
+
+    IMPORTANT:
+    - Extract information ONLY from the context.
+    - Do NOT infer.
+    - Do NOT add missing information.
+    - Do NOT complete the story from your own knowledge.
+    - List ONLY items explicitly present in the context.
+    - If asked for all events, provide only events found in the context.
+    - If information is missing, say:
+      'The retrieved sections do not contain enough information.'
+
+    {weak_str}
+
+    CONTEXT:
+    ─────────────────────────────────────────
+    {{context}}
+    ─────────────────────────────────────────
+    """
+
+    else:
+
+        system_prompt = f"""
+    You are a curriculum tutor for {student_name}.
+
+    You ONLY answer using the CONTEXT provided below.
+
+    1. Use ONLY the information contained in the CONTEXT. 
+       You may rephrase, explain, simplify, and solve questions using the information from the CONTEXT.
+
+       Do not introduce facts that are not supported by the CONTEXT.
+    2. If the user asks a question that appears in the context
+        (including exercise questions),
+       - Answer naturally as a teacher.
+       - Do not say "the context says" or "the answer is mentioned in the context".
+       - Explain the concept directly.
+       - Mention the source at the end.
+
+    3. If the user asks an exercise question,
+       - solve every part asked
+       - show step-by-step working
+       - provide the final answer clearly
+    4. Do not say the question was not provided if it appears in the context.
+
+    5. Mention the file/page used.
+    6. If the context does NOT contain the answer — say:
+       "This topic is not in the retrieved sections."
+    7. You can ask the student if he wants to learn more about related topics, but do not force it.
+    8. After answering, ask one short checking question
+    9. For exercise-solving questions, do NOT ask a checking question unless the student asks for practice.
+
+    {weak_str}
+
+    CONTEXT:
+    ─────────────────────────────────────────
+    {{context}}
+    ─────────────────────────────────────────
+    """
+
     prompt = ChatPromptTemplate.from_messages([
-        ("system", f"""You are a curriculum tutor for {student_name}.
-
-You ONLY answer using the CONTEXT provided below.
-
-STRICT RULES:
-1. Use ONLY the information contained in the CONTEXT. 
-   You may rephrase, explain, simplify, and solve questions using the information from the CONTEXT.
-
-   Do not introduce facts that are not supported by the CONTEXT.
-2. If the user asks a question that appears in the context
-   (including exercise questions),
-   - Answer naturally as a teacher.
-   - Do not say "the context says" or "the answer is mentioned in the context".
-   - Explain the concept directly.
-   - Mention the source at the end.
-
-3. If the user asks an exercise question,
-   - solve every part asked
-   - show step-by-step working
-   - provide the final answer clearly
-4. Do not say the question was not provided if it appears in the context.
-
-5. Mention the file/page used.
-6. If the context does NOT contain the answer — say:
-   "This topic is not in the retrieved sections."
-7. You can ask the student if he wants to learn more about related topics, but do not force it.
-8. After answering, ask one short checking question
-9. For exercise-solving questions, do NOT ask a checking question unless the student asks for practice.
-
-{weak_str}
-
-CONTEXT:
-─────────────────────────────────────────
-{{context}}
-─────────────────────────────────────────
-"""),
+        ("system", system_prompt),
         MessagesPlaceholder(variable_name="chat_history"),
         ("human", "{input}")
-    ])
+        ])
+        
 
     llm = load_llm()
 
