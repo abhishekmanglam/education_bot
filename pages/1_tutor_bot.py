@@ -61,10 +61,14 @@ student_class = get_student_class(student_id)
 # selected_subject = get_topics_for_class_subject(vectorstore,student_class,subject)
 def get_answer(user_input, chat_history, retriever):
 
+    clean_input = user_input.lower().strip().replace("?", "")
+
     followup_phrases = ["yes","no","explain","tell me more","why","how","what do you mean","please explain", "is that all", "anything else", "anything left",
                        "did you miss anything", "is there more"]
 
-    is_followup = user_input.lower().strip() in followup_phrases
+    # is_followup = user_input.lower().strip() in followup_phrases
+
+    is_followup = clean_input in followup_phrases
 
     if is_followup:
 
@@ -112,9 +116,9 @@ def get_answer(user_input, chat_history, retriever):
     "is there more"
     ]
 
-    is_verification = (
-    user_input.lower().strip() in verification_phrases
-    )
+    
+
+    is_verification = clean_input in verification_phrases
 
     if is_verification and "last_retrieved_docs" in st.session_state:
 
