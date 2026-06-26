@@ -168,6 +168,8 @@ if not st.session_state.assessment_started:
     #     ]
     # )
 
+    student_class = get_student_class(student_id)
+
     subjects = get_subjects_for_class(
     vectorstore,
     student_class
@@ -185,7 +187,7 @@ if not st.session_state.assessment_started:
         #     placeholder="e.g. Motion, Triangles, Force"
         # )
 
-        student_class = get_student_class(student_id)
+        # student_class = get_student_class(student_id)
 
         topics = get_topics_for_class_subject(vectorstore,student_class,subject)
 
