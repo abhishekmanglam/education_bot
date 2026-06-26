@@ -394,3 +394,18 @@ def get_topic_performance(student_id):
     conn.close()
 
     return rows
+    
+def get_subjects(vectorstore, student_class=None):
+    subjects = set()
+
+    for doc_id in vectorstore.docstore._dict:
+        doc = vectorstore.docstore._dict[doc_id]
+
+        if student_class and doc.metadata.get("class") != student_class:
+            continue
+
+        subject = doc.metadata.get("subject")
+        if subject:
+            subjects.add(subject)
+
+    return sorted(subjects)
