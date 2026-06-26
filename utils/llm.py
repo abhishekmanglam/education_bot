@@ -6,11 +6,11 @@ def load_llm():
 
     key = st.secrets["GROQ_API_KEY"]
 
-    st.write("Key exists:", bool(key))
-    st.write("Key starts with:", key[:10])
+    # st.write("Key exists:", bool(key))
+    # st.write("Key starts with:", key[:10])
 
     return ChatGroq(
         model="llama-3.3-70b-versatile",
-        temperature=0.5,
+        temperature=0.4,
         api_key=key
     )
