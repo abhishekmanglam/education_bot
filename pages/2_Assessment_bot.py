@@ -13,7 +13,7 @@ from utils.student_profile import (
     save_question_log,
     get_or_create_student,
     get_student_class,
-    get_subjects,
+    get_subjects_for_class,
     get_topics_for_class_subject
 )
 
@@ -168,9 +168,15 @@ if not st.session_state.assessment_started:
     #     ]
     # )
 
-    subjects = get_subjects(vectorstore, student_class)
+    subjects = get_subjects_for_class(
+    vectorstore,
+    student_class
+    )
 
-    subject = st.selectbox("Subject",subjects)
+    subject = st.selectbox(
+    "Subject",
+    subjects
+    )
 
     if mode == "Curriculum Topic":
 
