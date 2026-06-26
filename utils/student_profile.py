@@ -395,16 +395,20 @@ def get_topic_performance(student_id):
 
     return rows
     
-def get_subjects(vectorstore, student_class=None):
+def get_subjects_for_class(vectorstore, student_class):
+    """
+    Return all unique subjects available for a given class
+    from the FAISS metadata.
+    """
     subjects = set()
 
-    for doc_id in vectorstore.docstore._dict:
-        doc = vectorstore.docstore._dict[doc_id]
+    for doc in vectorstore.docstore._dict.values():
 
-        if student_class and doc.metadata.get("class") != student_class:
+        if doc.metadata.get("class") != student_class:
             continue
 
         subject = doc.metadata.get("subject")
+
         if subject:
             subjects.add(subject)
 
