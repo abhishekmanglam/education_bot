@@ -27,10 +27,39 @@ def load_vectorstore():
     embeddings = load_embeddings()
 
    
-    index_file = os.path.join(FAISS_DIR, "index.faiss")
+    # index_file = os.path.join(FAISS_DIR, "index.faiss")
     
-    if os.path.exists(index_file):
+    # if os.path.exists(index_file):
         
+    #     st.sidebar.success("✓ Loading existing FAISS index")
+    #     return FAISS.load_local(
+    #         FAISS_DIR,
+    #         embeddings,
+    #         allow_dangerous_deserialization=True
+    #     )
+
+    index_file = os.path.join(FAISS_DIR, "index.faiss")
+
+    # ---------- DEBUG ----------
+    st.sidebar.write("BASE_DIR:", BASE_DIR)
+    st.sidebar.write("FAISS_DIR:", FAISS_DIR)
+    st.sidebar.write("Looking for:", index_file)
+
+    if os.path.exists(BASE_DIR):
+        st.sidebar.write("BASE_DIR contents:")
+        st.sidebar.write(os.listdir(BASE_DIR))
+
+    if os.path.exists(FAISS_DIR):
+        st.sidebar.write("faiss_db contents:")
+        st.sidebar.write(os.listdir(FAISS_DIR))
+    else:
+        st.sidebar.write("faiss_db directory DOES NOT EXIST")
+
+    st.sidebar.write("index.faiss exists:", os.path.exists(index_file))
+    # ---------------------------
+
+    if os.path.exists(index_file):
+
         st.sidebar.success("✓ Loading existing FAISS index")
         return FAISS.load_local(
             FAISS_DIR,
