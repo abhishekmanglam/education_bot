@@ -380,10 +380,11 @@ Question Type:
 from the retrieved context.
 
 Do not use your general knowledge, textbook knowledge from other chapters,
-or facts you know from training unless being there is a need to do so. 
+Or facts you know from training, unless being there is necessary. 
 
 Rules:
-1. First identify the exact sentence(s) from CONTEXT that support the question.    
+1. First, identify the exact sentence(s) from CONTEXT that support the question but don't print that with the question. Give the exact sentence(s) from context 
+after submitting the answer.
 2. The correct answer must be directly stated or directly inferable from those sentences.
 3. NEVER ask the same question or concept using different wording.
 4. Choose a different part of the context whenever possible.
@@ -402,9 +403,8 @@ If no, discard that question.
 For each question, include:
 - supporting_text: an exact short quote from CONTEXT
 - source: filename and page number
-12. Generate:
+12. Generate one question at a time, and the question format can be either of the below:
 
-- Use only the context.
 - For MCQ provide 4 options.
 - For True/False provide statement only.
 - For Fill in the Blanks provide blanks.
