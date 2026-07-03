@@ -318,9 +318,9 @@ with st.sidebar:
     )
     #When the student changes the subject, the old verification documents should not remain available.
     if st.session_state.get("previous_tutor_subject") != selected_subject:
-    st.session_state.pop("last_retrieved_docs", None)
-    st.session_state.pop("last_retrieved_subject", None)
-    st.session_state["previous_tutor_subject"] = selected_subject
+        st.session_state.pop("last_retrieved_docs", None)
+        st.session_state.pop("last_retrieved_subject", None)
+        st.session_state["previous_tutor_subject"] = selected_subject
     
     if weak_topics:
         st.markdown("**⚠️ Weak topics:**")
