@@ -380,8 +380,8 @@ Question Type:
 from the retrieved context.
 
 Rules:
-1. Generate ONE new question.
-2. NEVER repeat any question listed above.
+1. Generate ONE new question strictly on the contents uploaded to build the vector store. 
+2. NEVER repeat the question.
 3. NEVER ask the same concept using different wording.
 4. Choose a different part of the context whenever possible.
 5. If previous questions are from exercises,
