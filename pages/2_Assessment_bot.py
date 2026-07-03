@@ -379,10 +379,13 @@ Question Type:
 {question_type} questions
 from the retrieved context.
 
+Do not use your general knowledge, textbook knowledge from other chapters,
+or facts you know from training unless being there is a need to do so. 
+
 Rules:
-1. Generate ONE new question strictly on the contents uploaded to build the vector store. 
-2. NEVER repeat the question.
-3. NEVER ask the same concept using different wording.
+1. First identify the exact sentence(s) from CONTEXT that support the question.    
+2. The correct answer must be directly stated or directly inferable from those sentences.
+3. NEVER ask the same question or concept using different wording.
 4. Choose a different part of the context whenever possible.
 5. If previous questions are from exercises,
    select another exercise.
@@ -390,7 +393,16 @@ Rules:
 7. Output ONLY the question.
 8. Avoid starting the question with the same words
    as any previous question.
-9. Generate:
+9.  Do NOT treat the file name, chapter name, subject name, or page number as content.
+10. If there is not enough explicit content to create a valid question, generate fewer questions.
+11. Before returning each question, internally check:
+"Can I point to exact text in the context that proves the correct answer?"
+If no, discard that question.
+
+For each question, include:
+- supporting_text: an exact short quote from CONTEXT
+- source: filename and page number
+12. Generate:
 
 - Use only the context.
 - For MCQ provide 4 options.
