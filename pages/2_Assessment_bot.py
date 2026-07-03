@@ -82,7 +82,7 @@ retriever = vectorstore.as_retriever(
     }
 )
 
-llm = load_llm()
+llm = load_llm(temperature=0.1)
 
 # ---------------------------------------------------
 # SESSION STATE
