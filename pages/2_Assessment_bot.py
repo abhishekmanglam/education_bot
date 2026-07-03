@@ -424,9 +424,7 @@ Rules:
 "Can I point to exact text in the context that proves the correct answer?"
 If no, discard that question.
 
-# For each question, after submitting the answer, include :
-# - supporting_text: an exact short quote from CONTEXT
-# - source: filename and page number
+
 12. Generate one question at a time, and the question format can be either of the below:
 
 - For MCQ provide 4 options.
