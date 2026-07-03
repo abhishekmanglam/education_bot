@@ -2,7 +2,7 @@ import streamlit as st
 from langchain_groq import ChatGroq
 
 @st.cache_resource
-def load_llm():
+def load_llm(temperature=0.4):
 
     # st.write("Secrets keys:", list(st.secrets.keys()))
 
@@ -15,6 +15,6 @@ def load_llm():
 
     return ChatGroq(
         model="llama-3.3-70b-versatile",
-        temperature=0.4,
+        temperature=temperature,
         api_key=key
     )
