@@ -408,7 +408,7 @@ Do not use your general knowledge, textbook knowledge from other chapters,
 Or facts you know from training, unless being there is necessary. 
 
 Rules:
-1. First, identify the exact sentence(s) from CONTEXT that support the question, but do not display them with the question. 
+1. First, identify the exact sentence(s) from CONTEXT that support the question. 
 2. The correct answer must be directly stated or directly inferable from those sentences.
 3. NEVER ask the same question or concept using different wording.
 4. Choose a different part of the context whenever possible.
@@ -424,7 +424,7 @@ Rules:
 "Can I point to exact text in the context that proves the correct answer?"
 If no, discard that question.
 
-For each question, include:
+For each question, after submitting the answer, include :
 - supporting_text: an exact short quote from CONTEXT
 - source: filename and page number
 12. Generate one question at a time, and the question format can be either of the below:
