@@ -74,13 +74,13 @@ with st.expander("📊 Assessment History"):
 
 vectorstore = load_vectorstore()
 
-retriever = vectorstore.as_retriever(
-    search_type="mmr",
-    search_kwargs={
-        "k": 10,
-        "fetch_k": 30
-    }
-)
+# retriever = vectorstore.as_retriever(
+#     search_type="mmr",
+#     search_kwargs={
+#         "k": 10,
+#         "fetch_k": 30
+#     }
+# )
 
 llm = load_llm(temperature=0.1)
 
@@ -265,7 +265,8 @@ if not st.session_state.assessment_started:
 # QUESTION GENERATION
 # ---------------------------------------------------
 
-def generate_question(subject, topic, difficulty):
+# def generate_question(subject, topic, difficulty):
+def generate_question(student_class, subject, topic, difficulty):
 
     question_types = [
     "Mixed",
@@ -299,12 +300,36 @@ def generate_question(subject, topic, difficulty):
     else:
         query = f"{subject} {topic}"
 
-    docs = retriever.invoke(query)
+    # docs = retriever.invoke(query)
+    filtered_retriever = vectorstore.as_retriever(
+        search_type="mmr",
+        search_kwargs={
+            "k": 10,
+            "fetch_k": 30,
+            "filter": {
+            "class": student_class,
+            "subject": subject
+            }
+        }
+    )
 
+    docs = filtered_retriever.invoke(query)
+    # temporary debug
+    st.sidebar.write("Requested class:", student_class)
+    st.sidebar.write("Requested subject:", subject)
+
+    for d in docs:
+        st.sidebar.write(
+            f"{d.metadata.get('filename')} | "
+            f"Class={d.metadata.get('class')} | "
+            f"Subject={d.metadata.get('subject')} | "
+            f"Page={d.metadata.get('page')}"
+        )
+    # temporary debug end
     st.sidebar.write(
     "Current Difficulty:",
     difficulty
-)
+    )
 
     st.sidebar.write(
     f"Retrieved {len(docs)} docs for question "
@@ -383,8 +408,7 @@ Do not use your general knowledge, textbook knowledge from other chapters,
 Or facts you know from training, unless being there is necessary. 
 
 Rules:
-1. First, identify the exact sentence(s) from CONTEXT that support the question but don't print that with the question. Give the exact sentence(s) from context 
-after submitting the answer.
+1. First, identify the exact sentence(s) from CONTEXT that support the question, but do not display them with the question. 
 2. The correct answer must be directly stated or directly inferable from those sentences.
 3. NEVER ask the same question or concept using different wording.
 4. Choose a different part of the context whenever possible.
@@ -586,7 +610,14 @@ if st.session_state.assessment_started:
 
     if st.session_state.current_question == "":
 
+        # q, ctx, src = generate_question(
+        #     st.session_state.current_subject,
+        #     st.session_state.current_topic,
+        #     st.session_state.current_difficulty
+        # )
+
         q, ctx, src = generate_question(
+            get_student_class(student_id),
             st.session_state.current_subject,
             st.session_state.current_topic,
             st.session_state.current_difficulty
