@@ -59,6 +59,29 @@ if weak_topics:
 student_class = get_student_class(student_id)
 
 # selected_subject = get_topics_for_class_subject(vectorstore,student_class,subject)
+def find_topic_from_question(user_input, vectorstore, student_class):
+    """
+    Checks whether the user's question contains a known topic/chapter name
+    for the student's class.
+    """
+    user_text = user_input.lower()
+
+    topics = set()
+
+    for doc in vectorstore.docstore._dict.values():
+        if doc.metadata.get("class") == student_class:
+            topic = doc.metadata.get("topic", "").strip()
+
+            if topic and topic.lower() != "unknown":
+                topics.add(topic)
+
+    # Longest first prevents a short topic matching before a longer one
+    for topic in sorted(topics, key=len, reverse=True):
+        if topic.lower() in user_text:
+            return topic
+
+    return None
+    
 def get_answer(user_input, chat_history, retriever):
 
     clean_input = user_input.lower().strip().replace("?", "")
@@ -126,10 +149,29 @@ def get_answer(user_input, chat_history, retriever):
 
     else:
 
+        matched_topic = find_topic_from_question(
+            search_query,
+            vectorstore,
+            student_class
+        )
+
+        st.sidebar.write("Detected chapter:", matched_topic)
+
+        # retrieved_docs = vectorstore.similarity_search(
+        # search_query,
+        # k=5,
+        # filter={"class": student_class})
+
+        search_filter = {"class": student_class}
+
+        if matched_topic:
+            search_filter["topic"] = matched_topic
+
         retrieved_docs = vectorstore.similarity_search(
-        search_query,
-        k=5,
-        filter={"class": student_class})
+            search_query,
+            k=k_value,
+            filter=search_filter
+        )
 
         st.session_state["last_retrieved_docs"] = retrieved_docs
 
@@ -225,6 +267,12 @@ def get_answer(user_input, chat_history, retriever):
     7. You can ask the student if he wants to learn more about related topics, but do not force it.
     8. After answering, ask one short checking question
     9. For exercise-solving questions, do NOT ask a checking question unless the student asks for practice.
+    10. If the user asks for questions directly from a named chapter:
+        - Use only exercise questions, review questions, activities, or examples explicitly present in the retrieved chapter context.
+        - Do not create new questions.
+        - Do not use content from another chapter or subject.
+        - If no questions are visible in the retrieved context, say:
+          "I could not find chapter questions in the retrieved pages."
 
     {weak_str}
 
