@@ -13,7 +13,7 @@ from utils.llm import load_llm
 # from utils.student_profile import get_weak_topics, init_db
 from utils.diagram_renderer import render_response_with_diagrams
 
-from utils.student_profile import (init_db, get_weak_topics, get_subjects_for_class,
+from utils.student_profile import (init_db, get_weak_topics,
     get_or_create_student, get_student_class, get_topics_for_class_subject)
 
 # ── PAGE CONFIG ────────────────────────────────────────────────────────────
@@ -39,13 +39,13 @@ st.caption(f"Personalised for {student_name} — answers only from your curricul
 
 # ── LOAD MODELS ────────────────────────────────────────────────────────────
 vectorstore = load_vectorstore()
-# retriever   = vectorstore.as_retriever(
-#     search_type="mmr",
-#     search_kwargs={
-#         "k": 8,
-#         "fetch_k": 15
-#     }
-# )
+retriever   = vectorstore.as_retriever(
+    search_type="mmr",
+    search_kwargs={
+        "k": 8,
+        "fetch_k": 15
+    }
+)
 
 # ── GET WEAK TOPICS FOR PERSONALISATION ───────────────────────────────────
 weak_topics = get_weak_topics(student_id)
@@ -58,17 +58,8 @@ if weak_topics:
 # ── RAG ANSWER FUNCTION ────────────────────────────────────────────────────
 student_class = get_student_class(student_id)
 
-available_subjects = get_subjects_for_class(vectorstore, student_class)
-
-if not available_subjects:
-    st.error(f"No subjects found for {student_class}.")
-    st.stop()
-
-
-
 # selected_subject = get_topics_for_class_subject(vectorstore,student_class,subject)
-#def get_answer(user_input, chat_history,retriever):
-def get_answer(user_input, chat_history):
+def get_answer(user_input, chat_history, retriever):
 
     clean_input = user_input.lower().strip().replace("?", "")
 
@@ -129,41 +120,18 @@ def get_answer(user_input, chat_history):
 
     is_verification = clean_input in verification_phrases
 
-    # if is_verification and "last_retrieved_docs" in st.session_state:
+    if is_verification and "last_retrieved_docs" in st.session_state:
 
-    #     retrieved_docs = st.session_state["last_retrieved_docs"]
-
-    # else:
-
-    #     retrieved_docs = vectorstore.similarity_search(
-    #     search_query,
-    #     k=5,
-    #     filter={"class": student_class})
-
-    #     st.session_state["last_retrieved_docs"] = retrieved_docs
-
-    if (
-        is_verification
-        and "last_retrieved_docs" in st.session_state
-        and st.session_state.get("last_retrieved_subject") == selected_subject
-    ):
-        # For “Is that all?”, reuse the same pages from the previous answer
         retrieved_docs = st.session_state["last_retrieved_docs"]
 
     else:
-        # For every normal question, search only this student's class + selected subject
-        retrieved_docs = vectorstore.similarity_search(
-            search_query,
-            k=k_value,
-            filter={
-                "class": student_class,
-                "subject": selected_subject
-            }
-        )
 
-        # Save these documents for a later verification question
+        retrieved_docs = vectorstore.similarity_search(
+        search_query,
+        k=5,
+        filter={"class": student_class})
+
         st.session_state["last_retrieved_docs"] = retrieved_docs
-        st.session_state["last_retrieved_subject"] = selected_subject
 
     # Debug
     st.sidebar.write("Retrieved docs:", len(retrieved_docs))
@@ -311,17 +279,6 @@ if "chat_history" not in st.session_state:
 with st.sidebar:
     st.markdown(f"**Student:** {student_name}")
     st.markdown(f"**Class:** {st.session_state.student_class}")
-    selected_subject = st.selectbox(
-        "Subject",
-        available_subjects,
-        key="tutor_subject"
-    )
-    #When the student changes the subject, the old verification documents should not remain available.
-    if st.session_state.get("previous_tutor_subject") != selected_subject:
-        st.session_state.pop("last_retrieved_docs", None)
-        st.session_state.pop("last_retrieved_subject", None)
-        st.session_state["previous_tutor_subject"] = selected_subject
-    
     if weak_topics:
         st.markdown("**⚠️ Weak topics:**")
         for t in weak_topics[:3]:
@@ -355,7 +312,7 @@ if user_input := st.chat_input("Ask your question here..."):
             answer, sources = get_answer(
                 user_input,
                 st.session_state.chat_history,
-                # retriever
+                retriever
             )
         st.markdown(answer)
         #render_response_with_diagrams(answer)
