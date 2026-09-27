@@ -14,7 +14,7 @@ def load_llm(temperature=0.4):
         st.stop()
 
     return ChatGroq(
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         temperature=temperature,
         api_key=key
     )
